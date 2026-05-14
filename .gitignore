@@ -1,0 +1,279 @@
+# ─────────────────────────────────────────────
+#  HealthBlog — .gitignore
+#  Covers: Node.js, React, MongoDB, Docker,
+#          GitHub Actions, editors & OS files
+# ─────────────────────────────────────────────
+
+
+# ══════════════════════════════════════════════
+#  DEPENDENCIES
+# ══════════════════════════════════════════════
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+
+# ══════════════════════════════════════════════
+#  ENVIRONMENT & SECRETS  ← never commit these
+# ══════════════════════════════════════════════
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.staging
+.env.staging.local
+.env.production
+.env.production.local
+
+# Keep the examples so teammates know what's needed
+!.env.example
+!.env.*.example
+
+
+# ══════════════════════════════════════════════
+#  BUILD OUTPUT
+# ══════════════════════════════════════════════
+
+# React production build
+frontend/build/
+frontend/.next/
+frontend/out/
+
+# Backend compiled output (if you ever add TypeScript)
+backend/dist/
+backend/build/
+
+
+# ══════════════════════════════════════════════
+#  UPLOADS & USER CONTENT
+# ══════════════════════════════════════════════
+
+# Uploaded images — stored on server/cloud, not in git
+backend/uploads/*
+
+# Keep the folder itself tracked
+!backend/uploads/.gitkeep
+
+
+# ══════════════════════════════════════════════
+#  LOGS
+# ══════════════════════════════════════════════
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime logs
+backend/logs/
+*.error.log
+*.access.log
+
+
+# ══════════════════════════════════════════════
+#  TESTING & COVERAGE
+# ══════════════════════════════════════════════
+coverage/
+frontend/coverage/
+backend/coverage/
+.nyc_output/
+*.lcov
+junit.xml
+test-results/
+
+
+# ══════════════════════════════════════════════
+#  DOCKER
+# ══════════════════════════════════════════════
+
+# Don't ignore Dockerfiles — they SHOULD be committed
+# Ignore local Docker override files
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Docker volumes created locally
+.docker/
+
+
+# ══════════════════════════════════════════════
+#  DATABASES (local dev)
+# ══════════════════════════════════════════════
+*.sqlite
+*.sqlite3
+*.db
+mongo-data/
+mongodb-data/
+
+
+# ══════════════════════════════════════════════
+#  CACHE & TEMP
+# ══════════════════════════════════════════════
+.cache/
+.temp/
+.tmp/
+tmp/
+temp/
+
+# ESLint cache
+.eslintcache
+
+# Stylelint cache
+.stylelintcache
+
+# Prettier cache
+.prettiercache
+
+# React scripts cache
+frontend/.cache/
+
+# Parcel cache
+.parcel-cache/
+
+# Vite cache
+.vite/
+
+
+# ══════════════════════════════════════════════
+#  PACKAGE MANAGER LOCKS
+#  (Pick ONE and commit it — uncomment the others)
+# ══════════════════════════════════════════════
+
+# Commit package-lock.json (npm) — recommended
+# Ignore yarn and pnpm locks if using npm
+yarn.lock
+pnpm-lock.yaml
+
+# If using yarn instead, swap the comments:
+# package-lock.json
+# pnpm-lock.yaml
+
+# If using pnpm instead:
+# package-lock.json
+# yarn.lock
+
+
+# ══════════════════════════════════════════════
+#  OPERATING SYSTEM
+# ══════════════════════════════════════════════
+
+# macOS
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+
+# ══════════════════════════════════════════════
+#  EDITORS & IDEs
+# ══════════════════════════════════════════════
+
+# VS Code — commit settings you want to share,
+# ignore workspace-specific and personal files
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+*.code-workspace
+
+# JetBrains (WebStorm, IntelliJ)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+Session.vim
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+
+# Atom
+.atom/
+
+
+# ══════════════════════════════════════════════
+#  GITHUB ACTIONS & CI/CD
+# ══════════════════════════════════════════════
+
+# Commit your workflow files — they SHOULD be in git
+# (.github/workflows/*.yml are tracked)
+
+# Ignore local act runner config (local Actions testing tool)
+.actrc
+.act/
+
+
+# ══════════════════════════════════════════════
+#  SSL / CERTIFICATES (local dev only)
+# ══════════════════════════════════════════════
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+ssl/
+certs/
+
+
+# ══════════════════════════════════════════════
+#  MISCELLANEOUS
+# ══════════════════════════════════════════════
+
+# Compressed archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Storybook build
+storybook-static/
+
+# Serverless framework
+.serverless/
+
+# Terraform (if added later)
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
