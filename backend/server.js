@@ -10,7 +10,28 @@ require('dotenv').config();
 const app = express();
 
 // ─── Security Middleware ───────────────────────────────────────────────────────
-app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: [
+        "'self'",
+        "data:",
+        "blob:",
+        "https://images.unsplash.com",
+        "https://picsum.photos",
+        "https://ui-avatars.com",
+        "https://fastly.picsum.photos",
+        "https://*.unsplash.com",
+      ],
+      connectSrc: ["'self'", "https://healthmattershub.com"],
+    },
+  },
+}));
 app.use(mongoSanitize());
 
 // ─── Rate Limiting ─────────────────────────────────────────────────────────────
