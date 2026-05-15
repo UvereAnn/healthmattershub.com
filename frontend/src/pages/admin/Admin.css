@@ -1,0 +1,82 @@
+.admin-layout { display: flex; min-height: 100vh; background: #f8fafe; }
+.admin-sidebar {
+  width: 240px; background: var(--primary-dark); color: #fff;
+  display: flex; flex-direction: column; position: fixed;
+  left: 0; top: 0; bottom: 0; z-index: 100; overflow-y: auto;
+}
+.admin-brand {
+  padding: 1.5rem 1.2rem; font-size: 1.15rem; font-weight: 800;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.admin-nav { flex: 1; padding: 1rem 0.6rem; display: flex; flex-direction: column; gap: 0.2rem; }
+.admin-nav-link {
+  display: block; padding: 0.65rem 0.9rem; border-radius: var(--radius-sm);
+  color: rgba(255,255,255,0.75); font-size: 0.9rem; text-decoration: none;
+  transition: all 0.2s; border: none; background: none; cursor: pointer;
+  text-align: left; font-family: var(--font); width: 100%;
+}
+.admin-nav-link:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.admin-nav-link.active { background: var(--primary-light); color: #fff; }
+.logout-btn { color: #fca5a5; margin-top: auto; }
+.logout-btn:hover { background: rgba(239,68,68,0.2); color: #f87171; }
+.admin-user-info {
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 1rem 1.2rem; border-top: 1px solid rgba(255,255,255,0.1);
+}
+.admin-user-info img { width: 36px; height: 36px; border-radius: 50%; }
+.admin-user-info strong { display: block; font-size: 0.85rem; }
+.admin-user-info span { font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+.admin-main { margin-left: 240px; flex: 1; overflow: auto; min-height: 100vh; }
+
+.admin-content { padding: 2rem; max-width: 1100px; }
+.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+.admin-header h1 { font-size: 1.6rem; font-weight: 700; }
+
+/* Stats */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+.stat-card {
+  background: #fff; border-radius: var(--radius); padding: 1.4rem;
+  box-shadow: var(--shadow); display: flex; align-items: center; gap: 1rem;
+  text-decoration: none; color: var(--text); transition: all 0.2s;
+}
+.stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.stat-icon { width: 50px; height: 50px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.stat-value { font-size: 1.8rem; font-weight: 800; color: var(--text); }
+.stat-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+
+.admin-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.admin-section-card { background: #fff; border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); }
+.admin-section-card h2 { font-size: 1.05rem; margin-bottom: 1rem; }
+.see-all-link { display: block; margin-top: 1rem; color: var(--primary); font-size: 0.9rem; text-decoration: none; }
+
+/* Status badges */
+.status-badge {
+  display: inline-block; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600;
+}
+.status-badge.published { background: #d1fae5; color: #065f46; }
+.status-badge.draft { background: #fef3c7; color: #92400e; }
+.status-badge.admin { background: #dbeafe; color: #1e40af; }
+.status-badge.user { background: #f3f4f6; color: #374151; }
+
+/* Post editor */
+.post-editor-form { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 2rem; }
+.editor-grid { display: grid; grid-template-columns: 1fr 320px; gap: 2rem; align-items: start; }
+.editor-main { min-width: 0; }
+.editor-sidebar > * { background: #f8fafe; border-radius: var(--radius-sm); padding: 1.2rem; margin-bottom: 1rem; }
+.editor-sidebar h3 { font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.img-preview { width: 100%; border-radius: var(--radius-sm); margin-top: 0.5rem; }
+
+/* Admin table actions */
+.action-btns { display: flex; gap: 0.4rem; }
+
+@media (max-width: 900px) {
+  .admin-sidebar { width: 200px; }
+  .admin-main { margin-left: 200px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .admin-grid-2, .editor-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .admin-sidebar { display: none; }
+  .admin-main { margin-left: 0; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
