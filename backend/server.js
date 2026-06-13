@@ -66,6 +66,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ─── API Routes ────────────────────────────────────────────────────────────────
+app.use('/api/health',     require('./routes/health'));
 app.use('/api/auth',       require('./routes/auth'));
 app.use('/api/posts',      require('./routes/posts'));
 app.use('/api/categories', require('./routes/categories'));
