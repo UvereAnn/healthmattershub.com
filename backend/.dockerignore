@@ -1,0 +1,31 @@
+# Dependencies - Docker installs these fresh
+node_modules/
+
+# Environment variables - never bake into image
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Uploaded files - these belong on a volume not in the image
+uploads/*
+!uploads/.gitkeep
+
+# Development files
+.git/
+.gitignore
+README.md
+*.md
+
+# Test files
+coverage/
+*.test.js
+*.spec.js
+
+# OS files
+.DS_Store
+Thumbs.db
