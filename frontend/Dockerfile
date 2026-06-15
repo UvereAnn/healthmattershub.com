@@ -57,11 +57,15 @@ EXPOSE 80
 
 # Health check
 # Nginx serves a simple 200 on / when healthy
+
+# 1. Add curl right here
+RUN apk add --no-cache curl
+
 HEALTHCHECK --interval=30s \
             --timeout=10s \
             --start-period=20s \
             --retries=3 \
-  CMD wget -qO- http://localhost:80 || exit 1
+  CMD curl -f http://localhost:80 || exit 1
 
 # Start Nginx in foreground
 # daemon off = keeps Nginx running as main process
