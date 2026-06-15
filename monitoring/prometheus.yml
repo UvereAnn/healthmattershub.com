@@ -41,12 +41,11 @@ scrape_configs:
           app: 'healthmattershub'
 
   # ── Nginx ─────────────────────────────────
-  # Nginx health status
+  # Scrapes translated metrics from the exporter on its default /metrics path
   - job_name: 'healthblog-nginx'
     scrape_interval: 30s
-    metrics_path: '/nginx-health'
     static_configs:
-      - targets: ['nginx:80']
+      - targets: ['nginx-exporter:9113']
         labels:
           service: 'nginx'
           app: 'healthmattershub'
