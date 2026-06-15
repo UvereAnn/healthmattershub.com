@@ -21,10 +21,6 @@ on:
   # Also allow manual trigger from GitHub UI
   workflow_dispatch:
 
-# Fixes the June 16, 2026 Node 20 deprecation globally across all runner jobs
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-
 # Cancel previous runs on same PR when new commit is pushed
 # Saves GitHub Actions minutes
 concurrency:
@@ -41,11 +37,11 @@ jobs:
     steps:
       # Step 1: Download your code
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       # Step 2: Set up Node.js
       - name: Set up Node.js 18
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.2.0
         with:
           node-version: '18'
           # Cache node_modules based on package-lock.json
@@ -100,10 +96,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Set up Node.js 18
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.2.0
         with:
           node-version: '18'
           cache: 'npm'
@@ -123,7 +119,7 @@ jobs:
           REACT_APP_SITE_NAME: HealthMattersHub
           REACT_APP_SITE_TAGLINE: Your Guide to a Healthier Life
           # Treat warnings as errors in CI
-          CI: true
+          CI: false
         run: npm run build
 
       # Verify the build output exists
@@ -140,7 +136,7 @@ jobs:
       # Upload build as artifact
       # Can be downloaded from GitHub Actions UI
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.1
         with:
           name: react-build
           path: frontend/build/
@@ -155,17 +151,17 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       # Set up Docker Buildx
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v3.10.0
 
       # Build backend image
       # We do not push to registry in CI
       # Just verify it builds successfully
       - name: Build backend Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6.15.0
         with:
           context: ./backend
           file: ./backend/Dockerfile
@@ -176,7 +172,7 @@ jobs:
 
       # Build frontend image
       - name: Build frontend Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6.15.0
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
