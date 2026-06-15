@@ -1,0 +1,52 @@
+# ─────────────────────────────────────────────
+#  Prometheus Configuration
+#  Tells Prometheus what to scrape and how often
+# ─────────────────────────────────────────────
+
+global:
+  # How often to scrape targets by default
+  scrape_interval: 15s
+
+  # How often to evaluate alerting rules
+  evaluation_interval: 15s
+
+  # Labels added to all metrics from this Prometheus instance
+  external_labels:
+    monitor: 'healthmattershub-monitor'
+    environment: 'local'
+
+# ── Scrape Configurations ────────────────────
+# Defines WHAT Prometheus should collect metrics from
+scrape_configs:
+
+  # ── Prometheus itself ──────────────────────
+  # Prometheus also exposes its own metrics
+  # Good for monitoring the monitor
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # ── Your App (Backend) ────────────────────
+  # Scrapes /api/metrics every 15 seconds
+  - job_name: 'healthblog-backend'
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: '/api/metrics'
+    static_configs:
+      # "backend" = Docker Compose service name
+      # Prometheus container resolves this via Docker DNS
+      - targets: ['backend:5000']
+        labels:
+          service: 'backend'
+          app: 'healthmattershub'
+
+  # ── Nginx ─────────────────────────────────
+  # Nginx health status
+  - job_name: 'healthblog-nginx'
+    scrape_interval: 30s
+    metrics_path: '/nginx-health'
+    static_configs:
+      - targets: ['nginx:80']
+        labels:
+          service: 'nginx'
+          app: 'healthmattershub'

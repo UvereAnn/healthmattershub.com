@@ -9,6 +9,10 @@ require('dotenv').config();
 
 const app = express();
 
+// Metrics middleware - must be before all routes
+const { metricsMiddleware } = require('./middleware/metrics');
+app.use(metricsMiddleware);
+
 // Trust proxy - required for rate limiting behind Nginx/proxy
 app.set('trust proxy', 1);
 
@@ -67,6 +71,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ─── API Routes ────────────────────────────────────────────────────────────────
 app.use('/api/health',     require('./routes/health'));
+app.use('/api/metrics',    require('./routes/metrics'));
 app.use('/api/auth',       require('./routes/auth'));
 app.use('/api/posts',      require('./routes/posts'));
 app.use('/api/categories', require('./routes/categories'));
