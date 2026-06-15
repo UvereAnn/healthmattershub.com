@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { postsAPI } from '../services/api';
 import Comments from '../components/blog/Comments';
-import BlogCard from '../components/blog/BlogCard';
+//import BlogCard from '../components/blog/BlogCard';
 import './PostDetail.css';
 
 export default function PostDetail() {
