@@ -3,10 +3,10 @@
 #  Docker Compose Configuration
 #
 #  Usage:
-#    Start:   docker-compose up --build
-#    Stop:    docker-compose down
-#    Logs:    docker-compose logs -f
-#    Restart: docker-compose restart
+#    Start:   docker compose up --build
+#    Stop:    docker compose down
+#    Logs:    docker compose logs -f
+#    Restart: docker compose restart
 # ─────────────────────────────────────────────
 
 version: '3.8'
@@ -58,14 +58,14 @@ services:
     volumes:
       - uploads-data:/app/uploads
 
-    # Health check - COMMENTED OUT
+    # Health check
     # Docker waits for this before starting nginx
-    # healthcheck:
-    #   test: ["CMD", "wget", "-qO-", "http://localhost:5000/api/health"]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 40s
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
     # Connect to shared network
     networks:
@@ -92,22 +92,18 @@ services:
     expose:
       - "80"
 
-    # Health check - COMMENTED OUT
-    # healthcheck:
-    #   test: ["CMD", "wget", "-qO-", "http://localhost:80"]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 20s
+    # Health check
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
-    # Only start after backend is healthy - COMMENTED OUT
-    # depends_on:
-    #   backend:
-    #     condition: service_healthy
-
-    # Simple dependency without health check
+    # Only start after backend is healthy
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
 
     networks:
       - healthblog-network
@@ -125,18 +121,20 @@ services:
     ports:
       - "80:80"
 
-    # Health check - COMMENTED OUT
-    # healthcheck:
-    #   test: ["CMD", "wget", "-qO-", "http://localhost/nginx-health"]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 10s
+    # Health check
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/nginx-health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
-    # Only start after both backend and frontend are ready - USING SIMPLE DEPENDENCY
+    # Only start after both backend and frontend are healthy
     depends_on:
-      - backend
-      - frontend
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
 
     networks:
       - healthblog-network
