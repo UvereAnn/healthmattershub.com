@@ -1,0 +1,20 @@
+# ─────────────────────────────────────────────
+#  Grafana Dashboard Provisioning
+#  Tells Grafana where to load dashboards from
+# ─────────────────────────────────────────────
+
+apiVersion: 1
+
+providers:
+  - name: 'HealthMattersHub Dashboards'
+    orgId: 1
+    folder: 'HealthMattersHub'
+    folderUid: 'healthmattershub'
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      # Grafana loads all JSON files from this folder
+      path: /var/lib/grafana/dashboards
