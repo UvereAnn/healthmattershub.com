@@ -21,6 +21,7 @@ scrape_configs:
 
   # ── Prometheus itself ──────────────────────
   # Prometheus also exposes its own metrics
+  # Good for monitoring the monitor
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
@@ -33,6 +34,7 @@ scrape_configs:
     metrics_path: '/api/metrics'
     static_configs:
       # "backend" = Docker Compose service name
+      # Prometheus container resolves this via Docker DNS
       - targets: ['backend:5000']
         labels:
           service: 'backend'
