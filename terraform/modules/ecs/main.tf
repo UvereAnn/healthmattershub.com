@@ -22,8 +22,14 @@ variable "task_role_arn"      { type = string }
 variable "target_group_arn"   { type = string }
 variable "backend_image"      { type = string }
 variable "frontend_image"     { type = string }
-variable "mongo_uri"          { type = string sensitive = true }
-variable "jwt_secret"         { type = string sensitive = true }
+variable "mongo_uri"          { 
+  type = string 
+  sensitive = true
+}
+variable "jwt_secret"         { 
+  type = string 
+  sensitive = true 
+}
 variable "jwt_expire"         { type = string }
 variable "frontend_url"       { type = string }
 
