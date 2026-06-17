@@ -43,3 +43,8 @@ output "nat_gateway_ip" {
   description = "NAT Gateway IP - whitelist this in MongoDB Atlas"
   value       = module.networking.nat_gateway_ip
 }
+
+output "alb_certificate_validation_options" {
+  description = "DNS records needed to validate the SSL certificate"
+  value       = module.alb.certificate_validation_options
+}

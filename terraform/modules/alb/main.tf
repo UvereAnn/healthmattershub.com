@@ -33,6 +33,13 @@ resource "aws_acm_certificate" "main" {
   }
 }
 
+# ── SSL Certificate Validation ────────────────
+# This tells Terraform to WAIT until you have added the CNAME 
+# records to AfeezHost and AWS changes the status to ISSUED.
+resource "aws_acm_certificate_validation" "main" {
+  certificate_arn = aws_acm_certificate.main.arn
+}
+
 # ── Application Load Balancer ────────────────
 resource "aws_lb" "main" {
   name               = "${var.project_name}-alb"
@@ -99,14 +106,19 @@ resource "aws_lb_listener" "https" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  certificate_arn   = aws_acm_certificate.main.arn
+
+  # certificate_arn   = aws_acm_certificate.main.arn
+  # CHANGED: Swapped aws_acm_certificate.main.arn to the validation arn
+  certificate_arn   = aws_acm_certificate_validation.main.certificate_arn
 
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.main.arn
   }
 
-  depends_on = [aws_acm_certificate.main]
+  #depends_on = [aws_acm_certificate.main]
+  # CHANGED: Forces Terraform to wait for the validation status to finish
+  depends_on = [aws_acm_certificate_validation.main]
 }
 
 # ── Outputs ──────────────────────────────────
