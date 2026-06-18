@@ -11,14 +11,14 @@
 #  - Auto Scaling
 # ─────────────────────────────────────────────
 
-variable "project_name"       { type = string }
-variable "environment"        { type = string }
-variable "aws_region"         { type = string }
-variable "vpc_id"             { type = string }
+variable "project_name"      { type = string }
+variable "environment"       { type = string }
+variable "aws_region"        { type = string }
+variable "vpc_id"            { type = string }
 variable "private_subnet_ids" { type = list(string) }
 variable "fargate_sg_id"      { type = string }
 variable "execution_role_arn" { type = string }
-variable "task_role_arn"      { type = string }
+variable "task_role_arn"       { type = string }
 variable "target_group_arn"   { type = string }
 variable "backend_image"      { type = string }
 variable "frontend_image"     { type = string }
@@ -30,10 +30,8 @@ variable "jwt_secret"         {
   type = string 
   sensitive = true 
 }
-variable "mongo_uri"          { type = string sensitive = true }
-variable "jwt_secret"         { type = string sensitive = true }
 variable "jwt_expire"         { type = string }
-variable "frontend_url"       { type = string }
+variable "frontend_url"        { type = string }
 
 # ── ECS Cluster ──────────────────────────────
 resource "aws_ecs_cluster" "main" {
@@ -50,9 +48,6 @@ resource "aws_ecs_cluster" "main" {
 }
 
 # ── ECS Task Definition ──────────────────────
-# Blueprint for your containers
-# Sidecar pattern: multiple containers in one task
-# They share the same network namespace
 resource "aws_ecs_task_definition" "app" {
   family                   = "${var.project_name}-task"
   requires_compatibilities = ["FARGATE"]
@@ -145,10 +140,6 @@ resource "aws_ecs_task_definition" "app" {
     },
 
     # ── Container 3: Prometheus Exporter ──────
-    # Sidecar pattern
-    # Runs alongside app containers
-    # Scrapes metrics from backend
-    # Same network = localhost access
     {
       name      = "prometheus-exporter"
       image     = "prom/node-exporter:latest"
@@ -178,9 +169,6 @@ resource "aws_ecs_task_definition" "app" {
 }
 
 # ── SSM Parameters for Secrets ───────────────
-# Stores secrets in AWS Systems Manager
-# Much safer than environment variables
-# ECS pulls these at runtime
 resource "aws_ssm_parameter" "mongo_uri" {
   name  = "/${var.project_name}/mongo_uri"
   type  = "SecureString"
@@ -202,7 +190,6 @@ resource "aws_ssm_parameter" "jwt_secret" {
 }
 
 # ── IAM Policy for SSM Access ────────────────
-# Execution role needs permission to read SSM parameters
 resource "aws_iam_role_policy" "ssm_access" {
   name = "${var.project_name}-ssm-access"
   role = split("/", var.execution_role_arn)[1]
@@ -226,9 +213,6 @@ resource "aws_iam_role_policy" "ssm_access" {
 }
 
 # ── ECS Service ───────────────────────────────
-# Keeps your tasks running
-# Handles rolling deployments
-# Registers tasks with ALB target group
 resource "aws_ecs_service" "main" {
   name            = "${var.project_name}-service"
   cluster         = aws_ecs_cluster.main.id
@@ -267,7 +251,6 @@ resource "aws_ecs_service" "main" {
 }
 
 # ── Auto Scaling ──────────────────────────────
-# Scale from 1 to 4 tasks based on CPU usage
 resource "aws_appautoscaling_target" "ecs" {
   max_capacity       = 4
   min_capacity       = 1
