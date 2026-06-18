@@ -17,8 +17,6 @@ variable "alb_sg_id"         { type = string }
 variable "domain_name"       { type = string }
 
 # ── SSL Certificate ──────────────────────────
-# Free SSL from AWS Certificate Manager
-# Validates via DNS (you add CNAME to your DNS)
 resource "aws_acm_certificate" "main" {
   domain_name               = var.domain_name
   subject_alternative_names = ["www.${var.domain_name}"]
@@ -34,8 +32,6 @@ resource "aws_acm_certificate" "main" {
 }
 
 # ── SSL Certificate Validation ────────────────
-# This tells Terraform to WAIT until you have added the CNAME 
-# records to AfeezHost and AWS changes the status to ISSUED.
 resource "aws_acm_certificate_validation" "main" {
   certificate_arn = aws_acm_certificate.main.arn
 }
@@ -56,8 +52,6 @@ resource "aws_lb" "main" {
 }
 
 # ── Target Group ─────────────────────────────
-# Fargate tasks register here
-# ALB sends traffic to healthy targets
 resource "aws_lb_target_group" "main" {
   name        = "${var.project_name}-tg"
   port        = 80
@@ -81,8 +75,6 @@ resource "aws_lb_target_group" "main" {
 }
 
 # ── HTTP Listener ────────────────────────────
-# Redirects all HTTP to HTTPS
-# Best practice: never serve over plain HTTP
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.main.arn
   port              = 80
@@ -99,28 +91,19 @@ resource "aws_lb_listener" "http" {
 }
 
 # ── HTTPS Listener ───────────────────────────
-# Serves actual traffic
-# Uses ACM certificate for SSL
 resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.main.arn
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-
-  # certificate_arn   = aws_acm_certificate.main.arn
-  # CHANGED: Swapped aws_acm_certificate.main.arn to the validation arn
   certificate_arn   = aws_acm_certificate_validation.main.certificate_arn
-  certificate_arn   = aws_acm_certificate.main.arn
 
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.main.arn
   }
 
-  #depends_on = [aws_acm_certificate.main]
-  # CHANGED: Forces Terraform to wait for the validation status to finish
   depends_on = [aws_acm_certificate_validation.main]
-  depends_on = [aws_acm_certificate.main]
 }
 
 # ── Outputs ──────────────────────────────────
