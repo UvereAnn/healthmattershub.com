@@ -30,6 +30,8 @@ variable "jwt_secret"         {
   type = string 
   sensitive = true 
 }
+variable "mongo_uri"          { type = string sensitive = true }
+variable "jwt_secret"         { type = string sensitive = true }
 variable "jwt_expire"         { type = string }
 variable "frontend_url"       { type = string }
 
