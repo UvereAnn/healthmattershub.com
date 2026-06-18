@@ -21,6 +21,9 @@ RUN npm ci --only=production
 # ─────────────────────────────────────────────
 FROM node:18-alpine AS production
 
+# Update system repositories and upgrade existing packages to patch vulnerabilities
+RUN apk update && apk upgrade --no-cache
+
 # Install dumb-init for proper signal handling
 # This ensures graceful shutdown when Docker stops the container
 RUN apk add --no-cache dumb-init
