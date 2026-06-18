@@ -338,7 +338,7 @@ jobs:
             echo "Attempt $i of $MAX_RETRIES..."
 
             HTTP_STATUS=$(curl -sL -o /dev/null -w "%{http_code}" \
-              http://${{ secrets.ALB_URL }}/api/health \
+              https://healthmattershub.com/api/health \
               --max-time 10 \
               --connect-timeout 5)
 
