@@ -202,9 +202,9 @@ jobs:
             ${{ secrets.ECR_FRONTEND_URL }}:latest
             ${{ secrets.ECR_FRONTEND_URL }}:${{ steps.meta.outputs.sha }}
           build-args: |
-            REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}
-            REACT_APP_SITE_NAME=${{ secrets.REACT_APP_SITE_NAME }}
-            REACT_APP_SITE_TAGLINE=${{ secrets.REACT_APP_SITE_TAGLINE }}
+            REACT_APP_API_URL=https://healthmattershub.com/api
+            REACT_APP_SITE_NAME=HealthMattersHub
+            REACT_APP_SITE_TAGLINE=Your Guide to a Healthier Life
           cache-from: type=gha
           cache-to: type=gha,mode=max
           load: true
@@ -364,24 +364,24 @@ jobs:
       # Verify specific API endpoints work
       - name: Verify API endpoints
         run: |
-          BASE_URL="http://${{ secrets.ALB_URL }}"
+          BASE_URL="https://healthmattershub.com"
 
           echo "Testing API endpoints..."
 
           # Test categories endpoint
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+          STATUS=$(curl -sL -o /dev/null -w "%{http_code}" \
             $BASE_URL/api/categories --max-time 10)
           echo "GET /api/categories: $STATUS"
           [ "$STATUS" = "200" ] || echo "⚠️ Categories endpoint returned $STATUS"
 
           # Test posts endpoint
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+          STATUS=$(curl -sL -o /dev/null -w "%{http_code}" \
             $BASE_URL/api/posts --max-time 10)
           echo "GET /api/posts: $STATUS"
           [ "$STATUS" = "200" ] || echo "⚠️ Posts endpoint returned $STATUS"
 
           # Test frontend loads
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+          STATUS=$(curl -sL -o /dev/null -w "%{http_code}" \
             $BASE_URL --max-time 10)
           echo "GET /: $STATUS"
           [ "$STATUS" = "200" ] || echo "⚠️ Frontend returned $STATUS"
