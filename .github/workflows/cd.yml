@@ -337,7 +337,7 @@ jobs:
           for i in $(seq 1 $MAX_RETRIES); do
             echo "Attempt $i of $MAX_RETRIES..."
 
-            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            HTTP_STATUS=$(curl -sL -o /dev/null -w "%{http_code}" \
               http://${{ secrets.ALB_URL }}/api/health \
               --max-time 10 \
               --connect-timeout 5)
