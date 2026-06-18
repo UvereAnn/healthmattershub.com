@@ -110,6 +110,7 @@ resource "aws_lb_listener" "https" {
   # certificate_arn   = aws_acm_certificate.main.arn
   # CHANGED: Swapped aws_acm_certificate.main.arn to the validation arn
   certificate_arn   = aws_acm_certificate_validation.main.certificate_arn
+  certificate_arn   = aws_acm_certificate.main.arn
 
   default_action {
     type             = "forward"
@@ -119,6 +120,7 @@ resource "aws_lb_listener" "https" {
   #depends_on = [aws_acm_certificate.main]
   # CHANGED: Forces Terraform to wait for the validation status to finish
   depends_on = [aws_acm_certificate_validation.main]
+  depends_on = [aws_acm_certificate.main]
 }
 
 # ── Outputs ──────────────────────────────────
