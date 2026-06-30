@@ -35,7 +35,13 @@ app.use(helmet({
         "https://fastly.picsum.photos",
         "https://*.unsplash.com",
       ],
-      connectSrc: ["'self'", "https://healthmattershub.com"],
+      connectSrc: [
+        "'self'", 
+        "https://healthmattershub.com",
+        "https://www.healthmattershub.com", 
+        "http://localhost:5000",             // Critical for your Local Docker testing in Phase 1
+        "*.amazonaws.com"
+      ],
     },
   },
 }));
@@ -52,8 +58,12 @@ app.use('/api/', limiter);
 // ─── CORS ─────────────────────────────────────────────────────────────────────
 const allowedOrigins = [
   'http://localhost:3000',
-  process.env.FRONTEND_URL || 'https://yourdomain.com'
-];
+  'https://healthmattershub.com',
+  'http://healthmattershub.com',
+  'https://www.healthmattershub.com',
+  'http://www.healthmattershub.com',
+  process.env.FRONTEND_URL
+].filter(Boolean);
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) callback(null, true);
